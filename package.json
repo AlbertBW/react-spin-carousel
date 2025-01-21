@@ -4,17 +4,23 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "vite --host",
+    "build": "tsc -p tsconfig.app.json && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "watch": "vitest"
   },
   "dependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "vite-plugin-dts": "^4.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.2.0",
+    "@types/node": "^22.10.7",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
@@ -24,6 +30,31 @@
     "globals": "^15.14.0",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.5"
+    "vite": "^6.0.5",
+    "vitest": "^3.0.1"
+  },
+  "description": "A react-spin-carousel",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlbertBW/react-spin-carousel.git"
+  },
+  "keywords": [
+    "react",
+    "components"
+  ],
+  "author": "Albert Wales",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AlbertBW/react-spin-carousel/issues"
+  },
+  "homepage": "https://github.com/AlbertBW/react-spin-carousel#readme",
+  "main": "./dist/react-spin-carousel.umd.js",
+  "module": "./dist/react-spin-carousel.es.js",
+  "types": "./dist/react-spin-carousel.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/react-spin-carousel.es.js",
+      "require": "./dist/react-spin-carousel.umd.js"
+    }
   }
 }
