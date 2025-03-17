@@ -1,7 +1,7 @@
 {
   "name": "react-spin-carousel",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
@@ -56,5 +56,10 @@
       "import": "./dist/react-spin-carousel.es.js",
       "require": "./dist/react-spin-carousel.umd.js"
     }
-  }
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ]
 }

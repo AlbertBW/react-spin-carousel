@@ -3,7 +3,6 @@ import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 
 export type CarouselProps = {
   children: ReactNode[];
-  scrollSpeed?: number;
   autoplaySpeed?: number;
   buttonScrollSpeed?: number;
   autoplay?: boolean;
@@ -20,9 +19,8 @@ export type CarouselProps = {
 
 export default function Carousel({
   children,
-  scrollSpeed = 1,
-  autoplaySpeed = scrollSpeed,
-  buttonScrollSpeed = scrollSpeed * 2,
+  autoplaySpeed = 1,
+  buttonScrollSpeed = autoplaySpeed * 2,
   autoplay = true,
   reverse = false,
   showScrollbar = false,
@@ -52,6 +50,8 @@ export default function Carousel({
   const [childrenWidths, setChildrenWidths] = useState<number[]>([]);
   const [childrenTotalWidth, setChildrenTotalWidth] = useState<number>(0);
 
+  const [frameTime, setFrameTime] = useState(0);
+
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const childRefs = useRef<React.RefObject<HTMLDivElement>[]>([]);
 
@@ -69,9 +69,6 @@ export default function Carousel({
   const firstChildIndex = 0;
   const firstChildCloneIndex = children.length;
 
-  const [refreshRate, setRefreshRate] = useState(0);
-  const [frameTime, setFrameTime] = useState(0);
-
   useEffect(() => {
     const getRefreshRate = () => {
       const frameTimes: number[] = [];
@@ -86,12 +83,12 @@ export default function Carousel({
         } else {
           const averageFrameTime =
             frameTimes.reduce((a, b) => a + b, 0) / frameTimes.length;
-
           setFrameTime(averageFrameTime);
 
-          const refreshRate = Math.round(1000 / averageFrameTime);
-
-          setRefreshRate(refreshRate);
+          if (averageFrameTime > 0) {
+            const calculatedSpeed = 60 / (1000 / frameTime);
+            setSpeed(Math.round(1 / calculatedSpeed));
+          }
         }
       };
 
@@ -99,7 +96,7 @@ export default function Carousel({
     };
 
     getRefreshRate();
-  }, [frameTime, refreshRate]);
+  }, [frameTime]);
 
   useEffect(() => {
     if (childRefs.current.length > 0) {
@@ -159,13 +156,6 @@ export default function Carousel({
     reverse,
   ]);
 
-  useEffect(() => {
-    if (frameTime > 0) {
-      const calculatedSpeed = 60 / (1000 / frameTime);
-      setSpeed(Math.round(1 / calculatedSpeed));
-    }
-  }, [frameTime, speed]);
-
   const scroll = useCallback(
     ({
       scrollSpeed,
@@ -217,7 +207,6 @@ export default function Carousel({
             childRefs.current[firstChildIndex].current.getBoundingClientRect()
               .x > repeatPosition
           ) {
-            console.log("A");
             carouselRef.current.scrollLeft = clonePosition - 1;
 
             // Scrolling forwards
@@ -229,7 +218,6 @@ export default function Carousel({
               20 <=
               repeatPosition
           ) {
-            console.log("B");
             carouselRef.current.scrollLeft = repeatPosition + 15;
           }
 
@@ -242,7 +230,6 @@ export default function Carousel({
             childRefs.current[firstChildIndex].current.getBoundingClientRect()
               .x >= repeatPosition
           ) {
-            console.log("C");
             carouselRef.current.scrollLeft = clonePosition - repeatPosition;
 
             // Scrolling forwards
@@ -252,7 +239,6 @@ export default function Carousel({
             childRefs.current[firstChildIndex].current?.getBoundingClientRect()
               .x == endPosition
           ) {
-            console.log("D");
             carouselRef.current.scrollLeft -= clonePosition;
           }
         }
@@ -337,7 +323,6 @@ export default function Carousel({
   const onDrag = (x: number) => {
     if (isDragging.current && carouselRef.current && allowMouseDrag) {
       const distance = x - startX.current;
-      console.log(distance, carouselRef.current.scrollLeft);
       carouselRef.current.scrollLeft = prevTranslate.current - distance;
     }
   };

@@ -1,0 +1,8 @@
+node_modules
+src/
+.vscode/
+dist/*.map
+tests/
+tsconfig*.json
+.eslint*
+README.md~
