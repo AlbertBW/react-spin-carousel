@@ -3,6 +3,7 @@ import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 
 export type CarouselProps = {
   children: ReactNode[];
+  className?: string;
   autoplaySpeed?: number;
   buttonScrollSpeed?: number;
   autoplay?: boolean;
@@ -19,6 +20,7 @@ export type CarouselProps = {
 
 export default function Carousel({
   children,
+  className,
   autoplaySpeed = 1,
   buttonScrollSpeed = autoplaySpeed * 2,
   autoplay = true,
@@ -34,26 +36,19 @@ export default function Carousel({
 }: CarouselProps) {
   const [isLeftHovered, setIsLeftHovered] = useState(false);
   const [isRightHovered, setIsRightHovered] = useState(false);
-
   const [paused, setPaused] = useState(false);
   const [speed, setSpeed] = useState<number>();
-
   const [repeatPosition, setRepeatPosition] = useState<number | null>(null);
   const [clonePosition, setClonePosition] = useState<number | null>(null);
   const [endPosition, setEndPosition] = useState<number | null>(null);
-
   const [render, setRender] = useState(false);
   const [frame, setFrame] = useState(0);
-
   const [animationFrameId, setAnimationFrameId] = useState<number | null>();
-
   const [childrenWidths, setChildrenWidths] = useState<number[]>([]);
   const [childrenTotalWidth, setChildrenTotalWidth] = useState<number>(0);
-
   const [frameTime, setFrameTime] = useState(0);
-
-  const carouselRef = useRef<HTMLDivElement | null>(null);
-  const childRefs = useRef<React.RefObject<HTMLDivElement>[]>([]);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const childRefs = useRef<React.RefObject<HTMLDivElement | null>[]>([]);
 
   // Mouse drag
   const isDragging = useRef(false);
@@ -378,6 +373,7 @@ export default function Carousel({
         onMouseDown={handleMouseDownDrag}
         onMouseMove={handleMouseMoveDrag}
         onMouseUp={handleMouseUpDrag}
+        className={className}
       >
         {clonedChildren.map((child, index) => (
           <div

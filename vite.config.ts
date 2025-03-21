@@ -7,9 +7,9 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   build: {
     lib: {
-      entry: path.resolve(__dirname, "src", "components/index.tsx"),
-      name: "react-library-scaffold",
-      fileName: (format) => `react-library-scaffold.${format}.js`,
+      entry: path.resolve(__dirname, "src/components/index.tsx"),
+      name: "ReactSpinCarousel",
+      fileName: (format) => `react-spin-carousel.${format}.js`,
     },
     rollupOptions: {
       external: ["react", "react-dom"],
@@ -24,6 +24,12 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    dts({ rollupTypes: true, tsconfigPath: "./tsconfig.app.json" }),
+    dts({
+      rollupTypes: true,
+      tsconfigPath: "./tsconfig.app.json",
+      outDir: "dist",
+      entryRoot: "src",
+      insertTypesEntry: true,
+    }),
   ],
 });

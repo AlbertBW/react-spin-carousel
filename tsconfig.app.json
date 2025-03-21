@@ -3,7 +3,7 @@
     "outDir": "./dist",
     "declaration": true,
     "declarationMap": true,
-    "emitDeclarationOnly": false,
+    "emitDeclarationOnly": true,
     
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
@@ -17,9 +17,8 @@
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    "noEmit": false,
     "jsx": "react-jsx",
-    "typeRoots": ["./dist/react-spin-carousel.d.ts", "node_modules/@types"],
 
     /* Linting */
     "strict": true,
